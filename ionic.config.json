@@ -1,0 +1,7 @@
+{
+  "name": "NaofoodRestaurant",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
