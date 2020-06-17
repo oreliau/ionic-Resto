@@ -8,90 +8,101 @@ import {
   IonMenu,
   IonMenuToggle,
   IonNote,
+  IonActionSheet
 } from '@ionic/react';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { nomComplet, mac } from '../Setting';
+// import DispoResto from './DispoResto';
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { bluetooth, bicycleOutline, archiveSharp} from 'ionicons/icons';
+// import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
+import Alert from './Alert'
+
+
 import './Menu.css';
 
 interface AppPage {
   url: string;
-  iosIcon: string;
   mdIcon: string;
   title: string;
 }
 
 const appPages: AppPage[] = [
   {
-    title: 'Inbox',
-    url: '/page/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
+    title: `Commande`,
+    url: '/page/Commande',
+    mdIcon: bicycleOutline
   },
   {
-    title: 'Outbox',
-    url: '/page/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
+    title: 'Bluetooth',
+    url: '/page/Bluetooth',
+    mdIcon: bluetooth
   },
   {
-    title: 'Favorites',
-    url: '/page/Favorites',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp
-  },
-  {
-    title: 'Archived',
-    url: '/page/Archived',
-    iosIcon: archiveOutline,
+    title: `Version APK`,
+    url: '/page/Version APK',
     mdIcon: archiveSharp
-  },
-  {
-    title: 'Trash',
-    url: '/page/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp
-  },
-  {
-    title: 'Spam',
-    url: '/page/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp
   }
 ];
 
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-
 const Menu: React.FC = () => {
+
+  // const [showAlert, setShowAlert] = useState(false);
+  const [showActionSheet, setShowActionSheet] = useState(false);
+
   const location = useLocation();
 
+
+  function changeResto(){
+    localStorage.removeItem('loged');
+    localStorage.removeItem('mac');
+    window.location.reload();
+  }
+
+  setTimeout(() => {
+    BluetoothSerial.isConnected().then(
+      (success) => {
+          console.log('bluetooth is connected')
+      },
+      (error) => {
+          BluetoothSerial.connect(mac).subscribe(
+            (success) => { console.log('bluetooth is now connected') },
+            (error) => {
+              return(      
+                <Alert 
+                  bluetooth={true}
+                  wifi={false}
+                  nouvelleCommande={false}
+                />
+              )
+            }
+          )
+      }
+    )
+  }, 500);
+
   return (
-    <IonMenu contentId="main" type="overlay">
+    <IonMenu contentId="main" menuId="main" side="start" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
+          <IonListHeader>
+            NaoFood
+            {/* <DispoResto /> */}
+          </IonListHeader>
+          <IonNote onClick={() => changeResto()}>{(nomComplet)? nomComplet : "cliquez ici pour définir le restaurant"}</IonNote>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
                 <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+                  <IonIcon slot="start" md={appPage.mdIcon} />
                   <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
             );
           })}
-        </IonList>
-
-        <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
-          ))}
+          
         </IonList>
       </IonContent>
     </IonMenu>

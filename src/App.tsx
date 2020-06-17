@@ -4,7 +4,7 @@ import React from 'react';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
-
+import LoginPage from './components/LoginPage'
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -25,7 +25,6 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 const App: React.FC = () => {
-
   return (
     <IonApp>
       <IonReactRouter>
@@ -33,12 +32,12 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main">
             <Route path="/page/:name" component={Page} exact />
-            <Redirect from="/" to="/page/Inbox" exact />
+            <Redirect from="/" to="/page/Commande" exact />
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>
     </IonApp>
-  );
+  )
 };
 
 export default App;

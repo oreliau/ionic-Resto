@@ -1,0 +1,25 @@
+ion-col.hydrated{
+    margin: auto;
+}
+.modal-wrapper .ion-page{
+    overflow-y: scroll!important;
+}
+
+.ImprimeDirect, .ImprimeModal{
+    height: 45px;
+}
+.ImprimeDirect{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.quantiteProduit{
+    margin: auto;
+}
+.descriptionProduit{
+    height: 25px;
+}
+
+.prixCommande, .totalPrix{
+    font-size: x-large!important;
+}
