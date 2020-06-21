@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { IonList, IonItem, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonItemSliding, IonItemOption, IonItemOptions, IonContent } from '@ionic/react';
 import { urlLogin, optionsLogin } from '../Setting'
-interface Props{
-    errorlog: any;
-    load: boolean;
-    data: any[];
-}
-const LoginPage: React.FC<Props> = ({errorlog, load, data}) => {
 
+const LoginPage: React.FC = () => {
     function registrerLog(resto: string, codeMac: string, nom: string){
         localStorage.setItem('loged', resto);
         localStorage.setItem('mac', codeMac);
@@ -33,24 +28,17 @@ const LoginPage: React.FC<Props> = ({errorlog, load, data}) => {
         );
     } else {
         return(
-            <IonPage>
-                <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Choisissez votre restaurant:</IonTitle>
-                </IonToolbar>
-                </IonHeader>
-                <IonContent>
-                    <IonList>
-                        {data.map((restos, index) => {
-                           return(
-                                <IonItem key={index}>
-                                    <IonLabel onClick={() => registrerLog(restos.nomMac, restos.mac, restos.resto)}>{restos.resto}</IonLabel>
-                                </IonItem>
-                           ) 
-                        })}
-                    </IonList>
-                </IonContent>
-            </IonPage>
+            <IonContent>
+                <IonList>
+                    {data.map((restos, index) => {
+                        return(
+                            <IonItem key={index}>
+                                <IonLabel onClick={() => registrerLog(restos.nomMac, restos.mac, restos.resto)}>{restos.resto}</IonLabel>
+                            </IonItem>
+                        ) 
+                    })}
+                </IonList>
+            </IonContent>
         )
     }
 }

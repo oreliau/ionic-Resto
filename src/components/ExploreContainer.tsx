@@ -25,18 +25,20 @@ const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
   const [isLoadedLogin, setisLoadedLogin] = useState(false);
   const [errorLogin, setErrorLogin] = useState(null);
   const [showAlertBleutooth, setShowAlertBleutooth] = useState(false);
+  const [showAlert, setAlert] = useState(false);
+
   let alerte = false
   const today = new Date();
   const todayReform = today.getDate()+"/"+(today.getMonth()+1)+"/"+today.getFullYear();
-  console.log(todayReform);
+  console.log("todayreform :" + todayReform + today.getMilliseconds);
 
   function setLocalID(items: []){
-    console.log("tesntative impression")
+    console.log("tentative impression")
     items.map((commandes: any) =>{
       if(commandes.jour == todayReform && commandes.resto.indexOf(resto) >= 0){
         
         if(localStorage.getItem(commandes.numCommande) != "printed"){
-          alerte =true;
+          setAlert(true);
           imprimerCommande(commandes);
           localStorage.setItem(commandes.numCommande, 'printed');
         }
@@ -140,10 +142,10 @@ const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
       .then(res => res.json())
       .then(
         (result) => {
+          setLocalID(result.commande);
           setisLoaded(true);
           setCommande(result.commande);
           setHoraire(result.horaire);
-          setLocalID(result.commande);
         },
         (error) => {
           setisLoaded(true);
@@ -158,10 +160,10 @@ const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
         .then(res => res.json())
         .then(
           (result) => {
+            setLocalID(result.commande);
             setisLoaded(true);
             setCommande(result.commande);
             setHoraire(result.horaire);
-            setLocalID(result.commande);
           },
           (error) => {
             setisLoaded(true);
@@ -172,7 +174,7 @@ const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
 
   //affiche message d'érreur si impossibilité de se connecter
   if(localStorage.getItem('loged') === null){
-    return <LoginPage data={dataLogin} load={isLoadedLogin} errorlog={errorLogin}/>
+    return <LoginPage />
   }
   else if(name === "Commande"){
     if (error != null) {
@@ -191,7 +193,7 @@ const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
       );
     } else {
       return (
-          <CommandeDisplay showAlerte={alerte} showAlertBleutooth={showAlertBleutooth} envoieData={commande}/>
+          <CommandeDisplay showAlerte={showAlert} showAlertBleutooth={showAlertBleutooth} envoieData={commande}/>
       );
     }
   }

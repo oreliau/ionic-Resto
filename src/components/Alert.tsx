@@ -45,15 +45,15 @@ const AlertExample: React.FC<Props> = ({wifi = false, bluetooth = false, nouvell
     }
 
     function checkCommande(){
+        console.log("end ring");
         setShowAlert3(false);
         file.stop();
     }
 
     //fonction lié à l'alerte commande
-    if(nouvelleCommande === true){
-        setShowAlert3(true)
-        file.play();
+    function ring(){
         console.log('ring');
+        file.play();
     }
 
 
@@ -73,14 +73,15 @@ const AlertExample: React.FC<Props> = ({wifi = false, bluetooth = false, nouvell
                 isOpen={showAlert2}
                 onDidDismiss={() => checkBluetooth()}
                 cssClass='my-custom-class'
-                header={'Bluetooth: imprimante'}
+                header='Bluetooth: imprimante'
                 message='Connexion perdue ou introuvable, cliquez sur "OK" pour retenter un connexion'
                 buttons={['OK']}
             />
             <IonAlert
                 backdrop-dismiss="false" 
-                isOpen={showAlert3}
+                isOpen={nouvelleCommande}
                 onDidDismiss={() => checkCommande()}
+                onWillPresent={() => ring()}
                 cssClass='my-custom-class'
                 header='Nouvelle Commande'
                 message={''}

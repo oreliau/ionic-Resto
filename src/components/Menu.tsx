@@ -89,9 +89,12 @@ const Menu: React.FC = () => {
         <IonList id="inbox-list">
           <IonListHeader>
             NaoFood
-            {/* <DispoResto /> */}
           </IonListHeader>
-          <IonNote onClick={() => changeResto()}>{(nomComplet)? nomComplet : "cliquez ici pour définir le restaurant"}</IonNote>
+          <IonNote >
+              <IonItem className={"/page/Restaurant"} routerLink={'/page/Restaurant'} routerDirection="none" lines="none" detail={false}>
+                {(nomComplet)? nomComplet : "cliquez ici pour définir le restaurant"}
+              </IonItem>
+          </IonNote>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
